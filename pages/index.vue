@@ -2,7 +2,7 @@
   <v-main id="main" class="pa-0 ma-0">
     <v-container class="main_body d-flex flex-column justify-space-between">
       <div class="px-sm-4 px-3">
-        <v-row align="center" class="header py-5">
+        <v-row align="center" class="header py-lg-5">
           <v-col cols="6" class="text-left px-0">
             <img
               src="~/assets/img/cello_logo_transparent.png"
@@ -17,7 +17,7 @@
             class="d-flex px-0 align-center justify-end user-avatar"
           >
             <v-btn class="mx-2" fab small color="success">
-              <v-icon color="grey darken-4" large>
+              <v-icon color="grey darken-4" dense>
                 mdi-account
               </v-icon>
             </v-btn>
@@ -82,6 +82,7 @@
               justify="center"
             >
               <input
+                v-model="answers[n]"
                 placeholder="Type your answer here"
                 class="row px-5 py-2 my-12 text-center"
               />
@@ -140,17 +141,18 @@
       </div>
       <v-alert
         tile
+        prominent
         min-height="50"
         min-width="350"
-        type="info"
-        origin="top"
+        type="success"
+        origin="bottom-right"
         transition="slide-x-reverse-transition"
         mode="in-out"
         class="submit-alert"
         ref="submitAlert"
         :value="alertState"
       >
-        Submited
+        Your answers submitted
       </v-alert>
     </v-container>
   </v-main>
@@ -192,8 +194,9 @@ export default {
       timer: null,
       totalTime: 15 * 60,
       resetButton: false,
-      title: "Let the countdown begin!!"
-    };
+      title: "Let the countdown begin!!",
+      answers: [],
+    };s
   },
   mounted() {
     this.startTimer();
@@ -220,11 +223,13 @@ export default {
       return this.curr > step ? "rgb(100,214,121)" : "rgb(242,288,75)";
     },
     done() {
-      this.curr = this.questions.length;
-      this.stopTimer();
       this.alertState = true;
       setTimeout(() => {
         this.alertState = false;
+        this.curr = 1;
+        this.answers = [];
+        this.resetTimer();
+        this.startTimer();
       }, 3000);
     },
     nextStep(step) {
@@ -307,8 +312,9 @@ export default {
 }
 .submit-alert {
   position: absolute;
-  top: 120px;
+  bottom: 0;
   right: 0;
+  z-index: 11;
 }
 .v-application--is-ltr .theme--light.v-stepper--vertical .v-stepper__content {
   position: absolute;
