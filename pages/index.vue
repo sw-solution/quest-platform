@@ -26,7 +26,7 @@
               tile
               outlined
               color="white"
-              class="ml-sm-4 ml-3 px-sm-7 py-sm-4 px-5 py-3"
+              class="ml-sm-4 ml-1 px-sm-7 py-sm-4 px-4 py-2"
               >LOGIN</v-btn
             >
           </v-col>
@@ -111,7 +111,7 @@
           <v-divider color="white" />
           <v-col cols="12" class="px-0">
             <v-row>
-              <v-col cols="6" class="text-left">
+              <v-col cols="6" class="text-left py-sm-2 py-0">
                 <h3 class="timer white--text text-center">
                   <div id="timer" class="d-flex">
                     <span id="minutes" class="min-box pr-3"
@@ -126,7 +126,7 @@
                   </div>
                 </h3>
               </v-col>
-              <v-col cols="6" class="text-right pr-10">
+              <v-col cols="6" class="text-right py-sm-2 py-0 pr-10">
                 <img
                   src="~/assets/img/footer_logo_transparent.png"
                   width="100"
@@ -154,6 +154,13 @@
       >
         Your answers submitted
       </v-alert>
+      <v-dialog v-model="dialog" width="500px" max-width="90%">
+        <v-card color="red" class="px-5 py-3">
+          <p v-for="(answer, n) in answers" :key="n" class="mt-5 white--text">
+            Answer{{ n + 1 }} : {{ answer }}
+          </p>
+        </v-card>
+      </v-dialog>
     </v-container>
   </v-main>
 </template>
@@ -196,7 +203,9 @@ export default {
       resetButton: false,
       title: "Let the countdown begin!!",
       answers: [],
-    };s
+      dialog: false
+    };
+    s;
   },
   mounted() {
     this.startTimer();
@@ -224,9 +233,11 @@ export default {
     },
     done() {
       this.alertState = true;
+      this.dialog = true;
       setTimeout(() => {
         this.alertState = false;
         this.curr = 1;
+        this.dialog = false;
         this.answers = [];
         this.resetTimer();
         this.startTimer();
@@ -271,232 +282,242 @@ export default {
 </script>
 
 <style>
-  .v-stepper__step.v-stepper__step--inactive > span {
-    background: rgb(130, 129, 129) !important;
-  }
+.v-stepper__step.v-stepper__step--inactive > span {
+  background: rgb(130, 129, 129) !important;
+}
 
-  .theme--light.v-stepper .v-stepper__step__step {
-    color: transparent !important;
-  }
+.theme--light.v-stepper .v-stepper__step__step {
+  color: transparent !important;
+}
 
-  .v-application--is-ltr .v-stepper--vertical .v-stepper__content {
-    margin: -8px 36px -16px -36px;
-  }
-
-  .v-stepper__step__step {
-    width: 14px !important;
-    height: 14px !important;
-    min-width: 14px !important;
-    margin-right: 0 !important;
-  }
+.v-stepper__step__step {
+  width: 14px !important;
+  height: 14px !important;
+  min-width: 14px !important;
+  margin-right: 0 !important;
+}
 </style>
 
 <style scoped>
-  #main {
-    background: url(~/assets/img/celo_dequest_bg_centred.jpg);
-    background-size: 100% 100%;
-    height: 100vh;
-    width: 100%;
-    min-height: 850px;
+#main {
+  background: url(~/assets/img/celo_dequest_bg_centred.jpg);
+  background-size: 100% 100%;
+  height: 100vh;
+  width: 100%;
+  min-height: 850px;
+}
+.main_body {
+  height: 100%;
+}
+.v-application--is-ltr .v-stepper--vertical .v-stepper__content {
+  margin: -8px 36px -16px -36px;
+  border-left: 0 !important;
+}
+.v-sheet.v-stepper {
+  background: transparent;
+}
+.timer {
+  font-size: 1.5rem;
+  width: 90px;
+}
+.timer-rate {
+  margin-top: -10px;
+  font-size: 1.2rem;
+  width: 90px;
+}
+.footer-logo {
+  margin-top: -50px;
+  position: relative;
+  z-index: 10;
+}
+.submit-alert {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 11;
+}
+.v-application--is-ltr .theme--light.v-stepper--vertical .v-stepper__content {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+.wizard-panel {
+  flex: 1;
+}
+.wizard-panel > div {
+  height: 100%;
+  background: none;
+  box-shadow: none !important;
+}
+
+.v-stepper__step {
+  flex-direction: row-reverse;
+}
+.v-stepper__step {
+  z-index: 10;
+}
+.btn-submit {
+  z-index: 10;
+}
+.question-panel,
+.answer-panel {
+  position: relative;
+  z-index: 10;
+}
+.question-mark-panel {
+  margin-top: 20px;
+}
+.question-area h2 {
+  width: 50%;
+  font-size: 40px;
+  color: white;
+  text-align: center;
+}
+.hint-area p {
+  width: 50%;
+  color: white;
+  text-align: center;
+  font-size: 18px;
+}
+.answer-panel input {
+  font-size: 25px;
+  margin: auto;
+  color: rgb(180, 179, 179);
+  border-bottom: 2px solid rgb(134, 136, 138);
+}
+.answer-panel button {
+  font-size: 20px;
+}
+.answer-panel input:focus-visible {
+  outline: none;
+}
+.step-point-line {
+  padding-top: 100px;
+  padding-right: 50px;
+  position: relative;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-bottom: 100px;
+}
+.question-mark-panel img {
+  max-width: 133px;
+}
+.step-point-line nav {
+  height: calc(100% - 200px);
+  width: 2px;
+  background-color: rgb(106, 109, 112);
+  position: absolute;
+  top: 100px;
+  right: 56px;
+}
+.min-box,
+.sec-box {
+  font-size: 30px;
+}
+.min-box > p,
+.sec-box > p {
+  font-size: 20px;
+  line-height: 50%;
+}
+
+@media (max-width: 1263px) {
+  .question-area h2 {
+    width: 80%;
   }
-  .main_body {
-    height: 100%;
-  }
- 
-  .v-sheet.v-stepper {
-    background: transparent;
-  }
-  .timer {
-    font-size: 1.5rem;
-    width: 90px;
-  }
-  .timer-rate {
-    margin-top: -10px;
-    font-size: 1.2rem;
-    width: 90px;
-  }
-  .footer-logo {
-    margin-top: -50px;
-    position: relative;
-    z-index: 10;
-  }
-  .submit-alert {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    z-index: 11;
-  }
+}
+
+@media (max-width: 940px) {
   .v-application--is-ltr .theme--light.v-stepper--vertical .v-stepper__content {
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    transform: translate(0, -50%);
+    padding-right: 30px;
   }
-  .wizard-panel {
-    flex: 1;
-  }
-  .wizard-panel > div {
-    height: 100%;
-    background: none;
-    box-shadow: none !important;
-  }
-  
-  .v-stepper__step {
-    flex-direction: row-reverse;
-  }
-  .v-stepper__step {
-    z-index: 10;
-  }
-  .btn-submit {
-    z-index: 10;
-  }
-  .question-panel,
-  .answer-panel {
-    position: relative;
-    z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .footer-panel {
+    display: anone;
   }
   .question-mark-panel {
-    margin-top: 20px;
-  }
-  .question-area h2 {
-    width: 50%;
-    font-size: 40px;
-    color: white;
-    text-align: center;
-  }
-  .hint-area p {
-    width: 50%;
-    color: white;
-    text-align: center;
-    font-size: 18px;
-  }
-  .answer-panel input {
-    font-size: 25px;
+    width: 20%;
     margin: auto;
-    color: rgb(180, 179, 179);
-    border-bottom: 2px solid rgb(134, 136, 138);
-  }
-  .answer-panel button {
-    font-size: 20px;
-  }
-  .answer-panel input:focus-visible {
-    outline: none;
-  }
-  .step-point-line {
-    padding-top: 100px;
-    padding-right: 50px;
-    position: relative;
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    padding-bottom: 100px;
   }
   .question-mark-panel img {
-    max-width: 133px;
+    width: 100%;
   }
-  .step-point-line nav {
-    height: calc(100% - 200px);
-    width: 2px;
-    background-color: rgb(106, 109, 112);
-    position: absolute;
-    top: 100px;
-    right: 56px;
+  .logo-img {
+    width: 70%;
+    min-width: 150px;
+    height: auto;
+  }
+  .user-avatar img {
+    width: 40px;
+    height: 40px;
+  }
+  .main_body {
+    padding-bottom: 0;
+  }
+  .footer-logo {
+    width: 25%;
+    height: auto;
+    min-width: 60px;
+    margin-top: -30px;
   }
   .min-box,
   .sec-box {
-    font-size: 30px;
+    font-size: 25px;
   }
   .min-box > p,
   .sec-box > p {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 650px) {
+  .step-point-line {
+    padding-right: 30px;
+  }
+  .step-point-line nav {
+    right: 36px;
+  }
+  .v-application--is-ltr .theme--light.v-stepper--vertical .v-stepper__content {
+    padding-right: 0px;
+  }
+  .question-mark-panel {
+    width: 25%;
+  }
+}
+
+@media (max-width: 540px) {
+  .question-mark-panel {
+    width: 20%;
+  }
+  .question-area h2 {
+    width: 90%;
+    font-size: 35px;
+  }
+  .hint-area p {
+    width: 75%;
+    font-size: 15px;
+  }
+  .answer-panel input {
     font-size: 20px;
-    line-height: 50%;
   }
+  .answer-panel button {
+    font-size: 17px;
+  }
+}
 
-  @media (max-width: 1263px) {
-    .question-area h2 {
-      width: 80%;
-    }
+@media (max-width: 360px) {
+  .question-area h2 {
+    font-size: 30px;
   }
-
-  @media (max-width: 940px) {
-    .v-application--is-ltr .theme--light.v-stepper--vertical .v-stepper__content {
-      padding-right: 30px;
-    }
+  .step-point-line {
+    padding-right: 10px;
   }
-
-  @media (max-width: 768px) {
-    .footer-panel {
-      display: anone;
-    }
-    .question-mark-panel {
-      width: 30%;
-      margin: auto;
-    }
-    .question-mark-panel img {
-      width: 100%;
-    }
-    .logo-img {
-      width: 70%;
-      min-width: 150px;
-      height: auto;
-    }
-    .user-avatar img {
-      width: 40px;
-      height: 40px;
-    }
-    #main {
-      min-height: auto;
-    }
-    .main_body {
-      padding-bottom: 0;
-    }
+  .step-point-line nav {
+    right: 16px;
   }
-
-  @media (max-width: 650px) {
-    .step-point-line {
-      padding-right: 30px;
-    }
-    .step-point-line nav {
-      right: 36px;
-    }
-    .v-application--is-ltr .theme--light.v-stepper--vertical .v-stepper__content {
-      padding-right: 0px;
-    }
-    .question-mark-panel {
-      width: 25%;
-    }
-  }
-
-  @media (max-width: 540px) {
-    .question-mark-panel {
-      width: 20%;
-    }
-    .question-area h2 {
-      width: 90%;
-      font-size: 35px;
-    }
-    .hint-area p {
-      width: 75%;
-      font-size: 15px;
-    }
-    .answer-panel input {
-      font-size: 20px;
-    }
-    .answer-panel button {
-      font-size: 17px;
-    }
-  }
-
-  @media (max-width: 360px) {
-    .question-area h2 {
-      font-size: 30px;
-    }
-    .step-point-line {
-      padding-right: 10px;
-    }
-    .step-point-line nav {
-      right: 16px;
-    }
-  }
+}
 </style>
