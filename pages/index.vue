@@ -85,6 +85,8 @@
                 v-model="answers[n]"
                 placeholder="Type your answer here"
                 class="row px-5 py-2 my-12 text-center"
+                @keyup="keypress"
+                ref="answerInput"
               />
               <v-btn
                 v-if="n + 1 < questions.length"
@@ -222,7 +224,17 @@ export default {
     }
   },
   methods: {
-    handle: function(value) {
+    keypress(e) {
+      if (e.keyCode === 13) {
+        console.log(this.curr, this.questions.length);
+        if (this.curr == this.questions.length) {
+          this.done();
+        } else {
+          this.nextStep(this.curr + 1);
+        }
+      }
+    },
+    handle(value) {
       this.curr = value;
     },
     stepComplete(step) {
