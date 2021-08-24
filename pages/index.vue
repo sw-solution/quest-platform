@@ -12,14 +12,23 @@
               class="logo-img"
             />
           </v-col>
-          <v-col cols="6" class="d-flex px-0 align-center justify-end user-avatar">
-            <img
-              src="~/assets/img/user-icon.png"
-              alt="user-icon"
-              width="50"
-              height="50"
-            />
-            <v-btn tile outlined color="white" class="ml-5 px-sm-7 py-sm-4 px-5 py-3">LOGIN</v-btn>
+          <v-col
+            cols="6"
+            class="d-flex px-0 align-center justify-end user-avatar"
+          >
+            <v-btn class="mx-2" fab small color="success">
+              <v-icon color="grey darken-4" large>
+                mdi-account
+              </v-icon>
+            </v-btn>
+
+            <v-btn
+              tile
+              outlined
+              color="white"
+              class="ml-sm-4 ml-3 px-sm-7 py-sm-4 px-5 py-3"
+              >LOGIN</v-btn
+            >
           </v-col>
         </v-row>
       </div>
@@ -97,7 +106,7 @@
         </v-stepper>
       </div>
       <div class="px-sm-4 footer-panel">
-        <v-row class="footer flex-column my-0">
+        <v-row class="footer flex-column my-0 px-sm-0 px-4">
           <v-divider color="white" />
           <v-col cols="12" class="px-0">
             <v-row>
@@ -119,8 +128,8 @@
               <v-col cols="6" class="text-right pr-10">
                 <img
                   src="~/assets/img/footer_logo_transparent.png"
-                  width="130"
-                  height="130"
+                  width="100"
+                  height="100"
                   class="footer-logo"
                   alt="footer-logo"
                 />
@@ -129,17 +138,30 @@
           </v-col>
         </v-row>
       </div>
+      <v-alert
+        tile
+        min-height="50"
+        min-width="350"
+        type="info"
+        origin="top"
+        transition="slide-x-reverse-transition"
+        mode="in-out"
+        class="submit-alert"
+        ref="submitAlert"
+        :value="alertState"
+      >
+        Submited
+      </v-alert>
     </v-container>
   </v-main>
 </template>
 
 <script>
-import $ from "jquery";
-
 export default {
   data: function() {
     return {
       curr: 1,
+      alertState: false,
       questions: [
         {
           question: "1: How will a decentralized aptent taciti sociosqu?",
@@ -174,19 +196,8 @@ export default {
     };
   },
   mounted() {
-    $(".theme--light.v-stepper .v-stepper__step__step").css({
-      color: "transparent"
-    });
-    $(".v-stepper__step__step").css({
-      width: "14px",
-      height: "14px",
-      minWidth: "14px",
-      marginRight: "0px"
-    });
-    $(".v-stepper__step.v-stepper__step--inactive>span").css({
-      background: "rgb(130, 129, 129)"
-    });
     this.startTimer();
+    // this.$refs.submitAlert.value = false;
   },
   computed: {
     minutes() {
@@ -210,6 +221,11 @@ export default {
     },
     done() {
       this.curr = this.questions.length;
+      this.stopTimer();
+      this.alertState = true;
+      setTimeout(() => {
+        this.alertState = false;
+      }, 3000);
     },
     nextStep(step) {
       this.curr = step;
@@ -249,15 +265,31 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 #main {
   background: url(~/assets/img/celo_dequest_bg_centred.jpg);
   background-size: 100% 100%;
   height: 100vh;
   width: 100%;
+  min-height: 850px;
 }
 .main_body {
   height: 100%;
+}
+.v-stepper__step__step {
+  width: 14px !important;
+  height: 14px !important;
+  min-width: 14px !important;
+  margin-right: 0 !important;
+}
+.v-stepper__step.v-stepper__step--inactive > span {
+  background: rgb(130, 129, 129) !important;
+}
+.theme--light.v-stepper .v-stepper__step__step {
+  color: transparent !important;
+}
+.v-sheet.v-stepper {
+  background: transparent;
 }
 .timer {
   font-size: 1.5rem;
@@ -272,6 +304,11 @@ export default {
   margin-top: -50px;
   position: relative;
   z-index: 10;
+}
+.submit-alert {
+  position: absolute;
+  top: 120px;
+  right: 0;
 }
 .v-application--is-ltr .theme--light.v-stepper--vertical .v-stepper__content {
   position: absolute;
@@ -376,7 +413,7 @@ export default {
 
 @media (max-width: 768px) {
   .footer-panel {
-    display: none;
+    display: anone;
   }
   .question-mark-panel {
     width: 30%;
@@ -385,15 +422,21 @@ export default {
   .question-mark-panel img {
     width: 100%;
   }
-.logo-img {
-  width: 70%;
-  min-width: 150px;
-  height: auto;
-}
-.user-avatar img {
-  width: 40px;
-  height: 40px;
-}
+  .logo-img {
+    width: 70%;
+    min-width: 150px;
+    height: auto;
+  }
+  .user-avatar img {
+    width: 40px;
+    height: 40px;
+  }
+  #main {
+    min-height: auto;
+  }
+  .main_body {
+    padding-bottom: 0;
+  }
 }
 
 @media (max-width: 650px) {

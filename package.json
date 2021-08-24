@@ -12,12 +12,9 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/pwa": "^3.3.5",
-    "bootstrap": "^5.1.0",
     "core-js": "^3.15.1",
     "es5": "^1.0.0",
-    "jquery": "^3.6.0",
     "nuxt": "^2.15.7",
-    "popper.js": "^1.16.1",
     "vuetify": "^2.5.5"
   },
   "devDependencies": {
