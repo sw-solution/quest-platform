@@ -66,16 +66,20 @@
                   alt="question-mark"
                 />
               </v-row>
-              <v-row class="question-area" justify="center">
-                <h2 class="mt-sm-5">
-                  {{ step.question }}
-                </h2>
-              </v-row>
-              <v-row class="hint-area" justify="center">
-                <p class="mt-sm-7">
-                  {{ step.hint }}
-                </p>
-              </v-row>
+              <perfect-scrollbar>
+                <div class="mt-5 question-panel__text-area">
+                  <v-row class="question-area mx-0" justify="center">
+                    <h2 class="mt-sm-5">
+                      {{ step.question }}
+                    </h2>
+                  </v-row>
+                  <v-row class="hint-area mx-0" justify="center">
+                    <p class="mt-sm-7">
+                      {{ step.hint }}
+                    </p>
+                  </v-row>
+                </div>
+              </perfect-scrollbar>
             </div>
             <div
               class="answer-panel d-flexq text-center flex-column"
@@ -183,6 +187,14 @@
 </template>
 
 <script>
+import Vue from "vue";
+import App from "./App";
+import PerfectScrollbar from "vue2-perfect-scrollbar";
+import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
+
+Vue.use(PerfectScrollbar);
+Vue.config.productionTip = false;
+
 export default {
   data: function() {
     return {
@@ -345,7 +357,6 @@ export default {
   background-size: 100% 100%;
   height: 100vh;
   width: 100%;
-  min-height: 850px;
 }
 .main_body {
   height: 100%;
@@ -378,10 +389,13 @@ export default {
   right: 0;
   z-index: 11;
 }
+.ps {
+  height: 250px;
+}
 .v-application--is-ltr .theme--light.v-stepper--vertical .v-stepper__content {
   position: absolute;
   width: 100%;
-  top: 50%;
+  top: 45%;
   transform: translate(0, -50%);
 }
 .wizard-panel {
@@ -450,7 +464,7 @@ export default {
   padding-bottom: 100px;
 }
 .question-mark-panel img {
-  max-width: 133px;
+  max-width: 105px;
 }
 .step-point-line nav {
   height: calc(100% - 200px);
