@@ -91,6 +91,7 @@
               <v-btn
                 v-if="n + 1 < questions.length"
                 color="success"
+                tile
                 class="px-sm-7 py-sm-5 px-5 py-3"
                 depressed
                 @click="nextStep(n + 2)"
@@ -100,9 +101,10 @@
                 v-else
                 color="success"
                 class="px-sm-7 py-sm-5 px-5 py-3"
+                tile
                 depressed
                 @click="done()"
-                >Submit</v-btn
+                >Finish</v-btn
               >
             </div>
           </v-stepper-content>
@@ -156,6 +158,20 @@
       >
         Your answers submitted
       </v-alert>
+      <v-alert
+        tile
+        prominent
+        min-height="50"
+        min-width="350"
+        type="warning"
+        origin="bottom-right"
+        transition="slide-x-reverse-transition"
+        mode="in-out"
+        class="warn-alert"
+        :value="warnAlertState"
+      >
+        Please type answer
+      </v-alert>
       <v-dialog v-model="dialog" width="500px" max-width="90%">
         <v-card color="red" class="px-5 py-3">
           <p v-for="(answer, n) in answers" :key="n" class="mt-5 white--text">
@@ -173,6 +189,13 @@ export default {
     return {
       curr: 1,
       alertState: false,
+      warnAlertState: false,
+      timer: null,
+      totalTime: 15 * 60,
+      resetButton: false,
+      title: "Let the countdown begin!!",
+      answers: [],
+      dialog: false,
       questions: [
         {
           question: "1: How will a decentralized aptent taciti sociosqu?",
@@ -199,19 +222,12 @@ export default {
           hint:
             "Duis hendrerit nisi ut purus semper, sit amet sodales ipsum tincidunt."
         }
-      ],
-      timer: null,
-      totalTime: 15 * 60,
-      resetButton: false,
-      title: "Let the countdown begin!!",
-      answers: [],
-      dialog: false
+      ]
     };
     s;
   },
   mounted() {
     this.startTimer();
-    // this.$refs.submitAlert.value = false;
   },
   computed: {
     minutes() {
@@ -244,21 +260,35 @@ export default {
       return this.curr > step ? "rgb(100,214,121)" : "rgb(242,288,75)";
     },
     done() {
-      this.alertState = true;
-      this.dialog = true;
-      setTimeout(() => {
-        this.alertState = false;
-        this.curr = 1;
-        this.dialog = false;
-        this.answers = [];
-        this.resetTimer();
-        this.startTimer();
-      }, 3000);
+      if (!this.answers[this.curr - 1]) {
+        this.warnAlertState = true;
+        setTimeout(() => {
+          this.warnAlertState = false;
+        }, 3000);
+      } else {
+        this.alertState = true;
+        this.dialog = true;
+        setTimeout(() => {
+          this.alertState = false;
+          this.curr = 1;
+          this.dialog = false;
+          this.answers = [];
+          this.resetTimer();
+          this.startTimer();
+        }, 3000);
+      }
     },
     nextStep(step) {
-      this.curr = step;
-      this.resetTimer();
-      this.startTimer();
+      if (!this.answers[this.curr - 1]) {
+        this.warnAlertState = true;
+        setTimeout(() => {
+          this.warnAlertState = false;
+        }, 3000);
+      } else {
+        this.curr = step;
+        this.resetTimer();
+        this.startTimer();
+      }
     },
     startTimer() {
       this.timer = setInterval(() => this.countdown(), 1000);
@@ -342,7 +372,8 @@ export default {
   position: relative;
   z-index: 10;
 }
-.submit-alert {
+.submit-alert,
+.warn-alert {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -382,7 +413,7 @@ export default {
 }
 .question-area h2 {
   width: 50%;
-  font-size: 40px;
+  font-size: 45px;
   color: white;
   text-align: center;
 }
@@ -393,12 +424,14 @@ export default {
   font-size: 18px;
 }
 .answer-panel input {
+  font-family: EBGaramond;
   font-size: 25px;
   margin: auto;
   color: rgb(180, 179, 179);
   border-bottom: 2px solid rgb(134, 136, 138);
 }
 .answer-panel button {
+  font-family: Jost;
   font-size: 20px;
 }
 .answer-panel input:focus-visible {
@@ -427,14 +460,18 @@ export default {
 }
 .min-box,
 .sec-box {
-  font-size: 30px;
+  font-family: Jost;
+  font-size: 28px;
 }
 .min-box > p,
 .sec-box > p {
   font-size: 20px;
   line-height: 50%;
 }
-
+.question-area > *,
+.hint-area > * {
+  font-family: EBGaramond;
+}
 @media (max-width: 1263px) {
   .question-area h2 {
     width: 80%;
