@@ -26,7 +26,7 @@
               tile
               outlined
               color="white"
-              class="ml-sm-4 ml-1 px-sm-7 py-sm-4 px-4 py-2"
+              class="ml-sm-4 ml-1 px-sm-7 py-sm-4 px-4 py-2 login-btn"
               >LOGIN</v-btn
             >
           </v-col>
@@ -92,7 +92,7 @@
                 v-if="n + 1 < questions.length"
                 color="success"
                 tile
-                class="px-sm-7 py-sm-5 px-5 py-3"
+                class="px-sm-7 py-sm-5 px-5 py-3 text-capitalize"
                 depressed
                 @click="nextStep(n + 2)"
                 >Submit</v-btn
@@ -100,7 +100,7 @@
               <v-btn
                 v-else
                 color="success"
-                class="px-sm-7 py-sm-5 px-5 py-3"
+                class="px-sm-7 py-sm-5 px-5 py-3 text-capitalize"
                 tile
                 depressed
                 @click="done()"
@@ -122,7 +122,6 @@
                       >{{ minutes }}
                       <p>min</p></span
                     >
-                    <span id="middle">:</span>
                     <span id="seconds" class="sec-box pl-3"
                       >{{ seconds }}
                       <p>secs</p></span
@@ -433,6 +432,9 @@ export default {
 .answer-panel button {
   font-family: Jost;
   font-size: 20px;
+}
+.login-btn {
+  font-family: Jost;
 }
 .answer-panel input:focus-visible {
   outline: none;
