@@ -88,7 +88,7 @@
               <input
                 v-model="answers[n]"
                 placeholder="Type your answer here"
-                class="row px-5 py-2 my-12 text-center"
+                class="row px-5 py-2 mb-sm-12 mt-sm-10 mt-0 mb-7 text-center"
                 @keyup="keypress"
                 ref="answerInput"
               />
@@ -187,15 +187,15 @@
 </template>
 
 <script>
-import Vue from "vue";
-import App from "./App";
-import PerfectScrollbar from "vue2-perfect-scrollbar";
+import { PerfectScrollbar } from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 
-Vue.use(PerfectScrollbar);
-Vue.config.productionTip = false;
+// Vue.use(PerfectScrollbar);
 
 export default {
+  components: {
+    PerfectScrollbar
+  },
   data: function() {
     return {
       curr: 1,
@@ -504,6 +504,9 @@ export default {
   .footer-panel {
     display: anone;
   }
+  .v-application--is-ltr .theme--light.v-stepper--vertical .v-stepper__content {
+    top: 50%;
+  }
   .question-mark-panel {
     width: 20%;
     margin: auto;
@@ -551,6 +554,9 @@ export default {
   }
   .question-mark-panel {
     width: 25%;
+  }
+  .ps {
+    height: 210px;
   }
 }
 
