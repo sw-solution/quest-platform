@@ -1,3 +1,24 @@
+.scroll-container {
+    overflow: auto;
+}
+
+.scroll-x-hidden {
+    overflow-x: hidden ;
+}
+
+.scroll-container::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background: #585858;
+    border-radius: 10px;
+}
+.scroll-container::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
 @font-face {
     font-family: EBGaramond;
     src: url(./../font/EB_Garamond/EBGaramond-VariableFont_wght.ttf);
